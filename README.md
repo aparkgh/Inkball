@@ -27,4 +27,4 @@ You can use Left Click to draw lines to guide the balls and Right Click or Contr
 **Gradle** is a powerful build automation tool used for managing dependencies, compiling code, and running tasks in software projects. It is particularly popular in Java development for automating the build process, handling large-scale projects efficiently, and integrating with IDEs. Gradle allows developers to write flexible build scripts and use plugins to simplify tasks like testing, packaging, and running applications. Its ability to handle complex project structures and its performance optimizations make it a go-to tool for modern development workflows.
 
 [^1]: Based on a basic score integer multiplied by a score modifier individual to each level
-[^2]: Provided that the ball or hole isn't grey. Grey balls can enter any coloured holes and grey holes accept any coloured balls.
+[^2]: Provided that the ball or hole isn't grey; grey balls can enter any coloured holes and grey holes accept any coloured balls.
