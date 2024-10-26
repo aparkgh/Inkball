@@ -19,9 +19,12 @@ Level 1 | Paused | Level Won
 
 Balls spawn periodically from spawner tiles throughout the level. The goal is to direct colored balls into matching holes by strategically creating barriers and pathways with ink.
 
-Score will only increase if the colour of a ball matches the colour of the hole, provided that the ball or hole isn't grey. If a ball enters a mismatched coloured hole, score is deducted based on a basic score integer multiplied by a score decrease modifier individual to each level, and the ball will be added back to the spawned balls for that level.
+Score will only increase[^1] if the colour of a ball matches the colour of the hole[^2]. If a ball enters a mismatched coloured hole, score is deducted[^1], and the ball will be added back to the spawned balls for that level.
 
 You can use Left Click to draw lines to guide the balls and Right Click or Control + Left Click to get rid of unwanted lines - and 'R' to restart any level at any time.
 
 ## What is Gradle?
 **Gradle** is a powerful build automation tool used for managing dependencies, compiling code, and running tasks in software projects. It is particularly popular in Java development for automating the build process, handling large-scale projects efficiently, and integrating with IDEs. Gradle allows developers to write flexible build scripts and use plugins to simplify tasks like testing, packaging, and running applications. Its ability to handle complex project structures and its performance optimizations make it a go-to tool for modern development workflows.
+
+[^1]: Based on a basic score integer multiplied by a score modifier individual to each level
+[^2]: Provided that the ball or hole isn't grey. Grey balls can enter any coloured holes and grey holes accept any coloured balls.
