@@ -19,7 +19,7 @@ Level 1 | Paused | Level Won
 
 Balls spawn periodically from spawner tiles throughout the level. The goal is to direct colored balls into matching holes by strategically creating barriers and pathways with ink.
 
-Score will only increase[^1] if the colour of a ball matches the colour of the hole[^2]. If a ball enters a mismatched coloured hole, score is deducted[^1], and the ball will be added back to the spawned balls for that level.
+Score will only increase[^1] if the colour of a ball matches the colour of the hole[^2]. If a ball enters a mismatched coloured hole, score is deducted[^1], and the ball will be added back to the list of balls to be spawned for that level.
 
 You can use Left Click to draw lines to guide the balls and Right Click or Control + Left Click to get rid of unwanted lines - and 'R' to restart any level at any time.
 
