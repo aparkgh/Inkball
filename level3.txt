@@ -1,0 +1,18 @@
+XXXXXXX4444444444X
+X22         33333X
+X22              X
+X                X
+X                X
+4  S             X
+4   B3           X
+3XX           H2 X
+3  XX    TTXX    3
+3    XXTT    XX  3
+X H2           XX3
+X           B1   4
+X             S  4
+X                X
+X                X
+X              22X
+X33333         22X
+X4444444444XXXXXXX
