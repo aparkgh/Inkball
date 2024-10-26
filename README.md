@@ -4,7 +4,7 @@ A recreation of the classic Inkball game in Java, developed using the Gradle bui
 
 Level 1 | Paused | Level Won
 :-:|:-:|:-:
-<img src="https://github.com/user-attachments/assets/57f8bced-f80b-44ce-be0e-f0f06c81ddb0" width="300"/> | <img src="https://github.com/user-attachments/assets/a3c210af-6d4b-485d-b686-cbc6e8812a36" width="300"/> | <img src="https://github.com/user-attachments/assets/e809a6fd-892a-41c9-bdfb-87a3d9139d09" width="320"/>
+<img src="https://github.com/user-attachments/assets/57f8bced-f80b-44ce-be0e-f0f06c81ddb0" width="300"/> | <img src="https://github.com/user-attachments/assets/a3c210af-6d4b-485d-b686-cbc6e8812a36" width="298"/> | <img src="https://github.com/user-attachments/assets/e809a6fd-892a-41c9-bdfb-87a3d9139d09" width="320"/>
 
 ## How to run
 * Install **Gradle 8.10.2** 🐘 or higher
