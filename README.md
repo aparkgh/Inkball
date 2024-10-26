@@ -3,7 +3,7 @@ A recreation of the classic Inkball game by Microsoft in Java, developed using t
 
 ## How to run
 * Install **Gradle 8.10.2** 🐘 or higher
-* Place all files in a folder and open the project using any **Gradle-compatible IDE** (e.g., VSC, IntelliJ IDEA, Eclipse).
+* Place all files in a folder and open the project using any **Gradle-compatible IDE** (e.g. VSC, IntelliJ IDEA, Eclipse).
 * Run the project by executing the following command in the terminal:
 ```
 gradle run
