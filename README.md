@@ -14,7 +14,7 @@ Level 1 | Paused | Level Won
 :-:|:-:|:-:
 <img src="https://github.com/user-attachments/assets/c5856684-4db4-46ac-864a-149ddae47e9e" width="320"/> | <img src="https://github.com/user-attachments/assets/adafa839-7eeb-462c-903c-36be8ee342ea" width="320"/> | <img src="https://github.com/user-attachments/assets/e809a6fd-892a-41c9-bdfb-87a3d9139d09" width="320"/>
 
-## What is Inkball? How do I play?
+## What is Inkball? And how do I play?
 **Inkball** is a classic puzzle game originally developed by Microsoft, where players draw lines to guide balls into designated holes.
 
 Balls **spawn** periodically from spawner tiles throughout the level. The goal is to **direct** colored balls into matching holes by strategically creating barriers and pathways with ink.
