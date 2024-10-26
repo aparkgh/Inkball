@@ -17,7 +17,9 @@ Level 1 | Paused | Level Won
 ## What is Inkball? How do I play?
 **Inkball** is a classic puzzle game originally developed by Microsoft, where players draw lines to guide balls into designated holes.
 
-Balls spawn periodically from spawner tiles throughout the level. The goal is to direct colored balls into matching holes by strategically creating barriers and pathways with ink. Score will only increase if the colour of a ball matches the colour of the hole, provided that the ball or hole isn't grey. If a ball enters a mismatched coloured hole, score is deducted based on a basic score integer multiplied by a score decrease modifier individual to each level, and the ball will be added back to the spawned balls for that level.
+Balls spawn periodically from spawner tiles throughout the level. The goal is to direct colored balls into matching holes by strategically creating barriers and pathways with ink.
+
+Score will only increase if the colour of a ball matches the colour of the hole, provided that the ball or hole isn't grey. If a ball enters a mismatched coloured hole, score is deducted based on a basic score integer multiplied by a score decrease modifier individual to each level, and the ball will be added back to the spawned balls for that level.
 
 You can use Left Click to draw lines to guide the balls and Right Click or Control + Left Click to get rid of unwanted lines - and 'R' to restart any level at any time.
 
