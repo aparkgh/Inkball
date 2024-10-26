@@ -1,5 +1,5 @@
 # Inkball
-A recreation of the classic Inkball game in Java, developed using the Gradle build system and the Processing library
+A recreation of the classic Inkball game by Microsoft in Java, developed using the Gradle build system and the Processing library.
 
 ## How to run
 * Install **Gradle 8.10.2** 🐘 or higher
