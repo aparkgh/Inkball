@@ -21,7 +21,7 @@ Balls **spawn** periodically from spawner tiles throughout the level. The goal i
 
 Score will only increase[^1] if the colour of a ball **matches** the colour of the hole[^2]. If a ball enters a **mismatched** coloured hole, score is deducted[^1], and the ball will be added back to the list of balls to be spawned for that level.
 
-You can use **Left Click** to draw lines to guide the balls and **Right Click** or **Control + Left Click** to get rid of unwanted lines- and **SPACE** to pause and **R** to restart any level at any time.
+You can use **Left Click** to draw lines to guide the balls and **Right Click** or **Control + Left Click** to get rid of unwanted lines- and **Space** to pause and **R** to restart any level at any time.
 
 ## What is Gradle?
 **Gradle** is a powerful build automation tool used for managing dependencies, compiling code, and running tasks in software projects. It is particularly popular in Java development for automating the build process, handling large-scale projects efficiently, and integrating with IDEs. Gradle allows developers to write flexible build scripts and use plugins to simplify tasks like testing, packaging, and running applications. Its ability to handle complex project structures and its performance optimizations make it a go-to tool for modern development workflows.
