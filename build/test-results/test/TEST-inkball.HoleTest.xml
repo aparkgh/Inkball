@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="inkball.HoleTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2024-10-25T08:22:41" hostname="apark" time="0.059">
+  <properties/>
+  <testcase name="orangeHole()" classname="inkball.HoleTest" time="0.002"/>
+  <testcase name="yellowHole()" classname="inkball.HoleTest" time="0.004"/>
+  <testcase name="blueHole()" classname="inkball.HoleTest" time="0.001"/>
+  <testcase name="getX()" classname="inkball.HoleTest" time="0.0"/>
+  <testcase name="getY()" classname="inkball.HoleTest" time="0.047"/>
+  <testcase name="greyHole()" classname="inkball.HoleTest" time="0.0"/>
+  <testcase name="getColour()" classname="inkball.HoleTest" time="0.0"/>
+  <testcase name="greenHole()" classname="inkball.HoleTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

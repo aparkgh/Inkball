@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Ball.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">inkball_scaffold</a> &gt; <a href="index.source.html" class="el_package">inkball</a> &gt; <span class="el_source">Ball.java</span></div><h1>Ball.java</h1><pre class="source lang-java linenums">package inkball;
+
+import processing.core.PApplet;
+import processing.core.PImage;
+import processing.core.PVector;
+
+import java.util.List;
+
+public class Ball extends PApplet{
+    private PVector position;
+    private PVector velocity;
+    private PImage sprite;
+    private PApplet app;
+<span class="fc" id="L14">    private float squareLeft = 0; // boundaries where the tiles spawn, so that the ball bounces off the square even if there are empty tiles.</span>
+<span class="fc" id="L15">    private float squareRight = 576;</span>
+<span class="fc" id="L16">    private float squareTop = 64;</span>
+<span class="fc" id="L17">    private float squareBottom = 576+64;</span>
+<span class="fc" id="L18">    private float ballSize = 1; // multiplier for ball size</span>
+<span class="fc" id="L19">    private int ballRadius = 24/2;</span>
+    private String colour;
+
+    /**
+     * &lt;p&gt;
+     * This method instantialises the Ball object. The only thing worth noting outside of param is that it uses a convertType
+     * function which sets it to a certain sprite based on a string colour. Note that this method is also used when a ball
+     * bounces on certain coloured walls.
+     * &lt;/p&gt;
+     * @param position is the position of the ball. This position is a PVector so that it's x and y values can be manipulated.
+     * @param velocity is the velocity of the ball. This position is a PVector so that it's x and y values can be manipulated.
+     * @param colour is the colour of the ball. This detemines things like interactions with certain colour balls entering certain
+     * coloured holes, and the ball's sprite.
+     */
+
+<span class="fc" id="L34">    public Ball(PVector position, PVector velocity, String colour, PApplet app) {</span>
+<span class="fc" id="L35">        this.position = position;</span>
+<span class="fc" id="L36">        this.velocity = velocity;</span>
+<span class="fc" id="L37">        this.app = app;</span>
+<span class="fc" id="L38">        this.colour = colour;</span>
+<span class="fc" id="L39">        convertType(colour);</span>
+<span class="fc" id="L40">    }</span>
+
+    /**
+     * &lt;p&gt;
+     * The update function firstly adds the velocity to the ball on each frame after all calculations.
+     * Then, two if conditionals check if the ball is touching the edge of the boundary of the grid (so
+     * that even if no tiles exist, the ball would still bounce on the edges).
+     * &lt;/p&gt;
+     * &lt;p&gt;
+     * Then, for all tiles, it checks if there has been a collision with the tile. The way that collisions are detected is
+     * with eight variables.
+     * Four of these variables are the top, right, bottom and left values of the ball. The other variables are the same but for
+     * the tile. Then, it checks if:
+     * 1. The right of the ball is more right than the left of the wall and
+     * 2. The left of the ball is more left than the right of the wall (meaning that at least some x value exists in the ball which
+     * also exists in a wall)
+     * 3. The bottom of the ball is lower than the top of the wall and
+     * 4. The top of the ball is higher than the bottom of the wall (meaning that at least some y value exists in the ball which
+     * also exists in a wall)
+     * This means that there must be a x and a y value where the ball intersects the wall, and using this I determine these to be the
+     * conditions to determine whether a collision between a ball and a wall occurs.
+     * &lt;/p&gt;
+     * &lt;p&gt;
+     * However before performing the necessary velocity changes, I check for adjacent walls. This is because sometimes in one frame
+     * the ball is doing fine but then suddenly in the next frame, the ball enters two walls at once some glitchy collisions may occur.
+     * To avoid this I do a check - For example if the ball bounces on the top of a wall, I check if there is a tile above that tile
+     * and if so I invalidate the collision. The reason why I do this is because if a ball bounces on an edge which is touching another
+     * tile, it is obviously because it has clipped inside two tiles at once. So, by checking if a tile with collision exists in one tile
+     * towards the direction of the edge, we can nullify the collision and effectively remove these glitchy collisions by only considering
+     * the edges that face the outside of the tiles (or if the tile in front does not have any collision). The way I check if there is
+     * collision is with a method in Tile.java called hasCollision which does various checks for the tile before returning a boolean value
+     * on it's collision status.
+     * &lt;/p&gt;
+     * &lt;p&gt;
+     * After all this mumbo jumbo the line collisions are then checked. For each line a 'checkLineCollision' method is run and performs it's
+     * necessary actions based on whether there is a collision or not. Finally, the attraction forces are calculated, which is checked by
+     * going through the positions of all the holes in the level and if the positions of a hole is less than 32 pixels than that of the position
+     * of any ball. Any ball which happens to be in this proximity has a vector added to it's velocity which is equivalent to 0.05% of the vector
+     * of the ball towards the centre of the hole. Additinoally it's size is proportionally reduced by a map function- it maps 0 to 32 representing
+     * the distance from the ball to the hole from 0 to 1, meaning that ballSize is 1(maximum) at a distance of 32 pixels and greater and ballSize
+     * is 0(minimum) at a distance of 0 pixels if the ball is inside the hole.
+     * &lt;/p&gt;
+     * &lt;p&gt;
+     * When a collision is detected between a ball and a wall, it stops checking for collisions as it sets collided to true and all rows and columns
+     * are only checked if the bottom if conditional which states if collided is true doesn't run which contains a break, breaking out of the for loop.
+     * &lt;/p&gt;
+     */
+
+    public void update() {
+<span class="pc bpc" id="L89" title="1 of 4 branches missed.">        if (!App.paused &amp;&amp; !App.timesup) {</span>
+<span class="fc" id="L90">            position.add(velocity);</span>
+
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">            if (position.x - sprite.width / 2 &lt; squareLeft) {</span>
+<span class="nc" id="L93">                position.x = squareLeft + sprite.width / 2;</span>
+<span class="nc" id="L94">                velocity.x *= -1;</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">            } else if (position.x + sprite.width / 2 &gt; squareRight) {</span>
+<span class="nc" id="L96">                position.x = squareRight - sprite.width / 2;</span>
+<span class="nc" id="L97">                velocity.x *= -1;</span>
+            }
+
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">            if (position.y - sprite.height / 2 &lt; squareTop) {</span>
+<span class="nc" id="L101">                position.y = squareTop + sprite.height / 2;</span>
+<span class="nc" id="L102">                velocity.y *= -1;</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">            } else if (position.y + sprite.height / 2 &gt; squareBottom) {</span>
+<span class="nc" id="L104">                position.y = squareBottom - sprite.height / 2;</span>
+<span class="nc" id="L105">                velocity.y *= -1;</span>
+            }
+            
+            // Check collision with walls only if allowed to collide again
+            // if (canCollideAgain) {
+<span class="fc" id="L110">                List&lt;List&lt;Tile&gt;&gt; tiles = ((App) app).getTiles();</span>
+                
+<span class="fc" id="L112">                boolean collided = false; // Flag to track if a collision occurred</span>
+    
+<span class="fc bfc" id="L114" title="All 2 branches covered.">                for (List&lt;Tile&gt; row : tiles) {</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">                    for (Tile tile : row) {</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">                        if (tile.hasCollision()) {</span>
+<span class="fc" id="L117">                            PVector wallPos = new PVector(tile.getX(), tile.getY());</span>
+    
+                            // Calculate bounds of the ball and the wall
+<span class="fc" id="L120">                            float ballLeft = position.x - ballRadius;</span>
+<span class="fc" id="L121">                            float ballRight = position.x + ballRadius;</span>
+<span class="fc" id="L122">                            float ballTop = position.y - ballRadius;</span>
+<span class="fc" id="L123">                            float ballBottom = position.y + ballRadius;</span>
+    
+<span class="fc" id="L125">                            float wallLeft = wallPos.x;</span>
+<span class="fc" id="L126">                            float wallRight = wallPos.x + App.CELLSIZE;</span>
+<span class="fc" id="L127">                            float wallTop = wallPos.y;</span>
+<span class="fc" id="L128">                            float wallBottom = wallPos.y + App.CELLSIZE;</span>
+    
+                            // Check for collision
+<span class="fc bfc" id="L131" title="All 8 branches covered.">                            if (ballRight &gt;= wallLeft &amp;&amp; ballLeft &lt;= wallRight &amp;&amp;</span>
+                                ballBottom &gt;= wallTop &amp;&amp; ballTop &lt;= wallBottom) {
+    
+                                // Ensure it's not the same wall as last collision
+                                // if (tile != lastCollisionWall) {
+                                    // Determine overlap amounts
+<span class="fc" id="L137">                                    float overlapLeft = wallRight - ballLeft;</span>
+<span class="fc" id="L138">                                    float overlapRight = ballRight - wallLeft;</span>
+<span class="fc" id="L139">                                    float overlapTop = wallBottom - ballTop;</span>
+<span class="fc" id="L140">                                    float overlapBottom = ballBottom - wallTop;</span>
+    
+                                    // returns the smallest value of the overlap.
+<span class="fc" id="L143">                                    float minOverlapX = Math.min(overlapLeft, overlapRight);</span>
+<span class="fc" id="L144">                                    float minOverlapY = Math.min(overlapTop, overlapBottom);</span>
+    
+                                    // Inside the collision detection loop, after calculating the overlaps:
+
+<span class="fc bfc" id="L148" title="All 2 branches covered.">                                    if (minOverlapX &lt; minOverlapY) {</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">                                        if (overlapLeft &lt; overlapRight) {</span>
+                                            // System.out.println(&quot;right&quot;);
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">                                            if (!isAdjacentWall(tile, &quot;right&quot;)) {</span>
+                                                // System.out.println(&quot;hit right side of wall&quot;);
+<span class="fc bfc" id="L153" title="All 2 branches covered.">                                                if (velocity.x &lt; 0) velocity.x *= -1; // Reverse velocity</span>
+                                                // velocity.x *= -1;
+                                            } else {
+                                                continue;
+                                            }
+                                        } else {
+                                            // System.out.println(&quot;left&quot;);
+                                            // check if there's a wall to the right
+<span class="nc bnc" id="L161" title="All 2 branches missed.">                                            if (!isAdjacentWall(tile, &quot;left&quot;)) {</span>
+                                                // System.out.println(&quot;hit left side of wall&quot;);
+<span class="nc bnc" id="L163" title="All 2 branches missed.">                                                if (velocity.x &gt; 0) velocity.x *= -1; // Reverse velocity</span>
+                                                // velocity.x *= -1;
+                                            } else {
+                                                continue;
+                                            }
+                                        }
+                                    } else {
+                                        // Collided on Y-axis (top/bottom)
+<span class="fc bfc" id="L171" title="All 2 branches covered.">                                        if (overlapTop &lt; overlapBottom) {</span>
+
+                                            // check if there's a wall above
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">                                            if (!isAdjacentWall(tile, &quot;bottom&quot;)) {</span>
+                                            // if (tile.hasCollision()) {
+                                                // System.out.println(&quot;hit bottom of wall&quot;);
+                                                // position.y += overlapTop - 1; // Move ball outside of collision
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">                                                if (velocity.y &lt; 0) velocity.y *= -1; // Reverse velocity</span>
+                                                // velocity.y *= -1;
+                                            } else {
+                                                continue;
+                                            }
+                                        } else {
+
+                                            // check if there's a wall below
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">                                            if (!isAdjacentWall(tile, &quot;top&quot;)) {</span>
+                                            // if (tile.hasCollision()) {
+                                                // System.out.println(&quot;hit top of wall&quot;);
+                                                // position.y -= overlapBottom + 1; // Move ball outside of collision
+<span class="fc bfc" id="L190" title="All 2 branches covered.">                                                if (velocity.y &gt; 0) velocity.y *= -1; // Reverse velocity</span>
+                                                // velocity.y *= -1;
+                                            } else {
+                                                continue;
+                                            }
+                                        }
+                                    }
+                                
+<span class="fc bfc" id="L198" title="All 4 branches covered.">                                    if(!tile.getColour().equals(this.getColour()) &amp;&amp; !tile.getColour().equals(&quot;grey&quot;)) {</span>
+<span class="fc" id="L199">                                        this.convertType(tile.getColour());</span>
+                                    }
+<span class="fc" id="L201">                                    collided = true;</span>
+<span class="fc" id="L202">                                    break;</span>
+                            }
+                        }
+<span class="fc" id="L205">                    }</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">                    if (collided) {</span>
+<span class="fc" id="L207">                        break;</span>
+                    }
+<span class="fc" id="L209">                }</span>
+<span class="fc" id="L210">            checkLineCollision(((App) app).getLinesList());</span>
+    
+<span class="fc bfc" id="L212" title="All 2 branches covered.">                for (Hole hole : App.holes) {</span>
+<span class="fc" id="L213">                    PVector holePosition = hole.getPosition();</span>
+<span class="fc" id="L214">                    float currentDistance = PVector.dist(this.position, holePosition);  // Calculate distance to the hole</span>
+
+<span class="pc bpc" id="L216" title="1 of 2 branches missed.">                    if (currentDistance &lt;= 32) {</span>
+<span class="nc" id="L217">                        ballSize = map(currentDistance, 0, 32, 0, 1);</span>
+<span class="nc" id="L218">                        PVector attraction = PVector.sub(holePosition, this.position);  // Attraction vector toward the hole</span>
+<span class="nc" id="L219">                        attraction.mult(0.005f);  // Scale down the attraction force</span>
+<span class="nc" id="L220">                        velocity.add(attraction);  // Add the attraction to the velocity</span>
+                    }
+<span class="fc" id="L222">                }</span>
+        }
+<span class="fc" id="L224">    }</span>
+
+    /**
+     * &lt;p&gt;
+     * This method draws each sprite but ensures that the sprite is drawn appropriately where the centre of the ball is. Additionally,
+     * the ball is drawn by ballSize, changed in update when the position is close to the position of a hole.
+     * &lt;/p&gt;
+     */
+    public void draw() {
+        // Draw the ball at its current position
+<span class="fc" id="L234">        app.image(sprite, position.x - sprite.width / 2, position.y - sprite.height / 2, sprite.width * ballSize, sprite.height * ballSize);</span>
+<span class="fc" id="L235">    }</span>
+
+    /**
+     * &lt;p&gt;
+     * This method checks for line collisions.
+     * &lt;/p&gt;
+     */
+    private void checkLineCollision(List&lt;List&lt;PVector&gt;&gt; allLinesList) {
+<span class="fc bfc" id="L243" title="All 2 branches covered.">        for (int lineIndex = 0; lineIndex &lt; allLinesList.size(); lineIndex++) {</span>
+<span class="fc" id="L244">            List&lt;PVector&gt; line = allLinesList.get(lineIndex);</span>
+<span class="fc bfc" id="L245" title="All 2 branches covered.">            for (int i = 0; i &lt; line.size() - 1; i++) {</span>
+<span class="fc" id="L246">                PVector p1 = line.get(i);</span>
+<span class="fc" id="L247">                PVector p2 = line.get(i + 1);</span>
+
+                // Calculate distance from ball to line segment (p1, p2)
+<span class="fc" id="L250">                float dP1Ball = PVector.dist(position, p1);</span>
+<span class="fc" id="L251">                float dP2Ball = PVector.dist(position, p2);</span>
+<span class="fc" id="L252">                float dP1P2 = PVector.dist(p1, p2);</span>
+
+                // Check if ball is colliding with the line
+<span class="pc bpc" id="L255" title="1 of 2 branches missed.">                if (dP1Ball + dP2Ball &lt; dP1P2 + sprite.width / 2) {</span>
+                    // Ball is colliding with the line, reflect its velocity
+<span class="nc" id="L257">                    reflectBall(p1, p2);</span>
+                    
+                    // Remove the line from the list
+<span class="nc" id="L260">                    allLinesList.remove(lineIndex);  // Remove the line after collision</span>
+<span class="nc" id="L261">                    return; // Exit after the first reflection to prevent multiple collisions in one frame</span>
+                }
+            }
+        }
+<span class="fc" id="L265">    }</span>
+
+
+
+    // Reflect the ball off the line segment
+    public void reflectBall(PVector p1, PVector p2) {
+        // Step 2: Calculate normal vectors
+<span class="fc" id="L272">        float dx = p2.x - p1.x;</span>
+<span class="fc" id="L273">        float dy = p2.y - p1.y;</span>
+
+<span class="fc" id="L275">        PVector N1 = new PVector(-dy, dx);  // First normal vector</span>
+<span class="fc" id="L276">        PVector N2 = new PVector(dy, -dx);  // Second normal vector</span>
+
+        // Step 3: Normalize the vectors
+<span class="fc" id="L279">        float length = PApplet.sqrt(dx * dx + dy * dy);</span>
+<span class="fc" id="L280">        PVector n1 = N1.div(length);</span>
+<span class="fc" id="L281">        PVector n2 = N2.div(length);</span>
+
+        // Step 4: Choose the normal vector closer to the ball
+<span class="fc" id="L284">        PVector midPoint = PVector.lerp(p1, p2, 0.5f); // Midpoint of the line segment</span>
+<span class="pc bpc" id="L285" title="1 of 2 branches missed.">        PVector n = (PVector.dist(midPoint.add(n1), position) &lt; PVector.dist(midPoint.add(n2), position)) ? n1 : n2;</span>
+
+        // Step 5: Reflect the ball's velocity using the chosen normal vector
+<span class="fc" id="L288">        velocity = velocity.sub(n.mult(2 * velocity.dot(n)));</span>
+<span class="fc" id="L289">    }</span>
+
+    public PVector getPosition() {
+<span class="fc" id="L292">        return position;</span>
+    }
+
+    // Check if there's a wall adjacent to the current tile in the specified direction
+    private boolean isAdjacentWall(Tile currentTile, String direction) {
+        
+<span class="fc" id="L298">        int currentX = currentTile.getX();</span>
+<span class="fc" id="L299">        int currentY = currentTile.getY();</span>
+        // if (currentX &lt; 0 || currentX &gt; App.GRID_WIDTH * App.CELLSIZE || currentY &lt; 0 || currentY &gt; App.GRID_HEIGHT  * App.CELLSIZE) {
+        //     return false;
+        // }
+        
+<span class="fc" id="L304">        List&lt;List&lt;Tile&gt;&gt; tiles = ((App) app).getTiles();</span>
+        // Check the tile in the direction of the collision
+<span class="pc bpc" id="L306" title="2 of 5 branches missed.">        switch (direction) {</span>
+            case &quot;left&quot;:
+<span class="nc bnc" id="L308" title="All 2 branches missed.">                if (currentX - App.CELLSIZE &gt;= 0) {</span>
+                    try {
+                        // Tile leftTile = tiles.get(currentY / App.CELLSIZE).get((currentX - App.CELLSIZE) / App.CELLSIZE);
+<span class="nc" id="L311">                        Tile leftTile = tiles.get((currentX - App.CELLSIZE) / App.CELLSIZE).get(currentY / App.CELLSIZE + 2);</span>
+<span class="nc" id="L312">                        return leftTile.hasCollision();</span>
+                        // return true;
+<span class="nc" id="L314">                    } catch (Exception IndexOutOfBoundsException) {</span>
+<span class="nc" id="L315">                        return false;</span>
+                    }
+                }
+                break;
+            case &quot;right&quot;:
+<span class="pc bpc" id="L320" title="1 of 2 branches missed.">                if (currentX + App.CELLSIZE &lt; App.GRID_WIDTH * App.CELLSIZE) {</span>
+                    try {
+                        // Tile rightTile = tiles.get(currentY / App.CELLSIZE).get((currentX + App.CELLSIZE) / App.CELLSIZE);
+<span class="fc" id="L323">                        Tile rightTile = tiles.get((currentX + App.CELLSIZE) / App.CELLSIZE).get(currentY / App.CELLSIZE + 2);</span>
+<span class="fc" id="L324">                        return rightTile.hasCollision();</span>
+                        // return true;
+<span class="nc" id="L326">                    } catch (Exception IndexOutOfBoundsException) {</span>
+<span class="nc" id="L327">                        return false;</span>
+                    }
+                }
+                break;
+            case &quot;top&quot;:
+<span class="pc bpc" id="L332" title="1 of 2 branches missed.">                if (currentY - App.CELLSIZE &gt;= 0) {</span>
+                    try {
+                        // Tile topTile = tiles.get((currentY - App.CELLSIZE) / App.CELLSIZE).get(currentX / App.CELLSIZE);
+<span class="nc" id="L335">                        Tile topTile = tiles.get(currentX / App.CELLSIZE).get((currentY - App.CELLSIZE) / App.CELLSIZE + 2);</span>
+<span class="nc" id="L336">                        return topTile.hasCollision();</span>
+                        // return true;
+<span class="fc" id="L338">                    } catch (Exception IndexOutOfBoundsException) {</span>
+<span class="fc" id="L339">                        return false;</span>
+                    }
+                }
+                break;
+            case &quot;bottom&quot;:
+<span class="pc bpc" id="L344" title="1 of 2 branches missed.">                if (currentY + App.CELLSIZE &lt; App.GRID_HEIGHT * App.CELLSIZE) {</span>
+                    try {
+                        // Tile bottomTile = tiles.get((currentY + App.CELLSIZE) / App.CELLSIZE).get(currentX / App.CELLSIZE);
+<span class="fc" id="L347">                        Tile bottomTile = tiles.get(currentX / App.CELLSIZE).get((currentY + App.CELLSIZE) / App.CELLSIZE + 2);</span>
+<span class="fc" id="L348">                        return bottomTile.hasCollision();</span>
+                        // return true;
+<span class="nc" id="L350">                    } catch (Exception IndexOutOfBoundsException) {</span>
+<span class="nc" id="L351">                        return false;</span>
+                    }
+                }
+<span class="nc" id="L354">                return false;</span>
+        }
+        
+<span class="nc" id="L357">        return true;  // No adjacent wall in the given direction</span>
+    }
+
+    public String getColour() {
+<span class="fc" id="L361">        return this.colour;</span>
+    }
+
+    public PVector getVelocity() {
+<span class="fc" id="L365">        return velocity;</span>
+    }
+
+    private void convertType(String colour) {
+<span class="fc bfc" id="L369" title="All 2 branches covered.">        if (colour.equals(&quot;grey&quot;)) {</span>
+<span class="fc" id="L370">            this.sprite = app.loadImage(&quot;src/main/resources/inkball/ball0.png&quot;);</span>
+<span class="fc" id="L371">            this.colour = &quot;grey&quot;;</span>
+<span class="fc bfc" id="L372" title="All 2 branches covered.">        } else if (colour.equals(&quot;orange&quot;)) {</span>
+<span class="fc" id="L373">            this.sprite = app.loadImage(&quot;src/main/resources/inkball/ball1.png&quot;);</span>
+<span class="fc" id="L374">            this.colour = &quot;orange&quot;;</span>
+<span class="fc bfc" id="L375" title="All 2 branches covered.">        } else if (colour.equals(&quot;blue&quot;)) {</span>
+<span class="fc" id="L376">            this.sprite = app.loadImage(&quot;src/main/resources/inkball/ball2.png&quot;);</span>
+<span class="fc" id="L377">            this.colour = &quot;blue&quot;;</span>
+<span class="pc bpc" id="L378" title="1 of 2 branches missed.">        } else if (colour.equals(&quot;green&quot;)) {</span>
+<span class="nc" id="L379">            this.sprite = app.loadImage(&quot;src/main/resources/inkball/ball3.png&quot;);</span>
+<span class="nc" id="L380">            this.colour = &quot;green&quot;;</span>
+<span class="pc bpc" id="L381" title="1 of 2 branches missed.">        } else if (colour.equals(&quot;yellow&quot;)) {</span>
+<span class="fc" id="L382">            this.sprite = app.loadImage(&quot;src/main/resources/inkball/ball4.png&quot;);</span>
+<span class="fc" id="L383">            this.colour = &quot;yellow&quot;;</span>
+        }
+<span class="fc" id="L385">    }</span>
+
+    public void setPosition(float x, float y) {
+<span class="fc" id="L388">        this.position.x = x;</span>
+<span class="fc" id="L389">        this.position.y = y;</span>
+<span class="fc" id="L390">    }</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

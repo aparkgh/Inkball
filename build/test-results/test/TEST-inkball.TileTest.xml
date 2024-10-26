@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="inkball.TileTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2024-10-25T08:22:41" hostname="apark" time="0.402">
+  <properties/>
+  <testcase name="becomeVisible1()" classname="inkball.TileTest" time="0.121"/>
+  <testcase name="becomeVisible2()" classname="inkball.TileTest" time="0.067"/>
+  <testcase name="printBallsYellow()" classname="inkball.TileTest" time="0.051"/>
+  <testcase name="getColour()" classname="inkball.TileTest" time="0.051"/>
+  <testcase name="getOgColour()" classname="inkball.TileTest" time="0.044"/>
+  <testcase name="becomeInvisible4()" classname="inkball.TileTest" time="0.066"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[java.util.ConcurrentModificationException
+	at java.util.ArrayList$Itr.checkForComodification(ArrayList.java:911)
+	at java.util.ArrayList$Itr.next(ArrayList.java:861)
+	at inkball.App.draw(App.java:284)
+	at processing.core.PApplet.handleDraw(PApplet.java:2426)
+	at processing.awt.PSurfaceAWT$12.callDraw(PSurfaceAWT.java:1557)
+	at processing.core.PSurfaceNone$AnimationThread.run(PSurfaceNone.java:316)
+]]></system-err>
+</testsuite>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Hole.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">inkball_scaffold</a> &gt; <a href="index.source.html" class="el_package">inkball</a> &gt; <span class="el_source">Hole.java</span></div><h1>Hole.java</h1><pre class="source lang-java linenums">package inkball;
+
+import processing.core.PApplet;
+import processing.core.PImage;
+import processing.core.PVector;
+
+public class Hole {
+    public PVector position;
+    private float x;            // X position of the hole
+    private float y;            // Y position of the hole
+    private PImage sprite;      // Image for the hole
+    private String colour;
+    public static final int SIZE = App.CELLSIZE; // Size of the hole
+
+    // Constructor for Hole
+<span class="fc" id="L16">    public Hole(float x, float y, String colour, PApplet app) {</span>
+<span class="fc" id="L17">        this.x = x; // Set x position</span>
+<span class="fc" id="L18">        this.y = y; // Set y position</span>
+<span class="fc" id="L19">        this.position = new PVector(x + SIZE, y + SIZE);</span>
+<span class="fc" id="L20">        this.colour = colour;</span>
+<span class="fc bfc" id="L21" title="All 2 branches covered.">        if (this.colour.equals(&quot;grey&quot;)) {</span>
+<span class="fc" id="L22">          this.sprite = app.loadImage(&quot;src/main/resources/inkball/hole0.png&quot;);</span>
+<span class="fc bfc" id="L23" title="All 2 branches covered.">      } else if (this.colour.equals(&quot;orange&quot;)) {</span>
+<span class="fc" id="L24">          this.sprite = app.loadImage(&quot;src/main/resources/inkball/hole1.png&quot;);</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">      } else if (this.colour.equals(&quot;blue&quot;)) {</span>
+<span class="fc" id="L26">          this.sprite = app.loadImage(&quot;src/main/resources/inkball/hole2.png&quot;);</span>
+<span class="fc bfc" id="L27" title="All 2 branches covered.">      } else if (this.colour.equals(&quot;green&quot;)) {</span>
+<span class="fc" id="L28">          this.sprite = app.loadImage(&quot;src/main/resources/inkball/hole3.png&quot;);</span>
+<span class="pc bpc" id="L29" title="1 of 2 branches missed.">      } else if (this.colour.equals(&quot;yellow&quot;)) {</span>
+<span class="fc" id="L30">          this.sprite = app.loadImage(&quot;src/main/resources/inkball/hole4.png&quot;);</span>
+      }
+<span class="fc" id="L32">    }</span>
+
+    // Draw the hole
+    public void draw(PApplet app) {
+<span class="fc" id="L36">        app.image(sprite, x, y); // Draw the hole image</span>
+<span class="fc" id="L37">    }</span>
+
+    // Get the x position
+    public float getX() {
+<span class="fc" id="L41">        return this.x; // Return the x position</span>
+    }
+
+    // Get the y position
+    public float getY() {
+<span class="fc" id="L46">        return this.y; // Return the y position</span>
+    }
+
+    public String getColour() {
+<span class="fc" id="L50">        return this.colour;</span>
+    }
+
+    public PVector getPosition() {
+<span class="fc" id="L54">        return this.position;</span>
+    }
+    // Check if the ball is in the hole
+    public boolean isBallInHole(Ball ball) {
+<span class="fc" id="L58">        float distance = PApplet.dist(ball.getPosition().x, ball.getPosition().y, x + SIZE, y + SIZE);</span>
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        return distance &lt; (SIZE/2); // Check if the ball is within the radius of the hole</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

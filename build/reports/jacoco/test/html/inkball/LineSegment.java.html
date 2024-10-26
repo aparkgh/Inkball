@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LineSegment.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">inkball_scaffold</a> &gt; <a href="index.source.html" class="el_package">inkball</a> &gt; <span class="el_source">LineSegment.java</span></div><h1>LineSegment.java</h1><pre class="source lang-java linenums">package inkball;
+
+import java.lang.Math;
+
+public class LineSegment {
+    public double x1, y1, x2, y2;
+
+<span class="nc" id="L8">    public LineSegment(double x1, double y1, double x2, double y2) {</span>
+<span class="nc" id="L9">        this.x1 = x1;</span>
+<span class="nc" id="L10">        this.y1 = y1;</span>
+<span class="nc" id="L11">        this.x2 = x2;</span>
+<span class="nc" id="L12">        this.y2 = y2;</span>
+<span class="nc" id="L13">    }</span>
+
+    public double distanceToPoint(double x, double y) {
+        // Line segment distance using point-line distance formula
+<span class="nc" id="L17">        double px = this.x2 - this.x1;</span>
+<span class="nc" id="L18">        double py = this.y2 - this.y1;</span>
+<span class="nc" id="L19">        double norm = px * px + py * py;</span>
+<span class="nc" id="L20">        double u = ((x - this.x1) * px + (y - this.y1) * py) / norm;</span>
+<span class="nc" id="L21">        u = Math.max(Math.min(u, 1), 0);  // Clamp to [0, 1]</span>
+<span class="nc" id="L22">        double dx = this.x1 + u * px - x;</span>
+<span class="nc" id="L23">        double dy = this.y1 + u * py - y;</span>
+<span class="nc" id="L24">        return Math.sqrt(dx * dx + dy * dy);</span>
+    }
+
+    public double[] getNormal(double x, double y) {
+        // Calculate the normal vector for the line segment
+<span class="nc" id="L29">        double dx = this.x2 - this.x1;</span>
+<span class="nc" id="L30">        double dy = this.y2 - this.y1;</span>
+<span class="nc" id="L31">        double length = Math.sqrt(dx * dx + dy * dy);</span>
+        // Get the normal vectors (-dy, dx) and (dy, -dx)
+<span class="nc" id="L33">        double[] normal1 = { -dy / length, dx / length };</span>
+<span class="nc" id="L34">        double[] normal2 = { dy / length, -dx / length };</span>
+        // Calculate distances to both normals
+<span class="nc" id="L36">        double midpointX = (this.x1 + this.x2) / 2;</span>
+<span class="nc" id="L37">        double midpointY = (this.y1 + this.y2) / 2;</span>
+<span class="nc" id="L38">        double dist1 = Math.sqrt((midpointX + normal1[0] - x) * (midpointX + normal1[0] - x) +</span>
+                                 (midpointY + normal1[1] - y) * (midpointY + normal1[1] - y));
+<span class="nc" id="L40">        double dist2 = Math.sqrt((midpointX + normal2[0] - x) * (midpointX + normal2[0] - x) +</span>
+                                 (midpointY + normal2[1] - y) * (midpointY + normal2[1] - y));
+        // Return the closest normal vector to the ball's current position
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        return dist1 &lt; dist2 ? normal1 : normal2;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

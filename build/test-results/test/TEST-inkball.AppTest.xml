@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="inkball.AppTest" tests="16" skipped="0" failures="0" errors="0" timestamp="2024-10-25T08:22:40" hostname="apark" time="0.245">
+  <properties/>
+  <testcase name="printBallsBlue()" classname="inkball.AppTest" time="0.001"/>
+  <testcase name="printBallsGrey()" classname="inkball.AppTest" time="0.001"/>
+  <testcase name="printBallsNull()" classname="inkball.AppTest" time="0.001"/>
+  <testcase name="printBallsGreen()" classname="inkball.AppTest" time="0.0"/>
+  <testcase name="gameEndedText()" classname="inkball.AppTest" time="0.01"/>
+  <testcase name="testTogglePause()" classname="inkball.AppTest" time="0.0"/>
+  <testcase name="testMain()" classname="inkball.AppTest" time="0.047"/>
+  <testcase name="timesupVerifier()" classname="inkball.AppTest" time="0.0"/>
+  <testcase name="printBallsOrange()" classname="inkball.AppTest" time="0.0"/>
+  <testcase name="pausedText()" classname="inkball.AppTest" time="0.001"/>
+  <testcase name="printBallsYellow()" classname="inkball.AppTest" time="0.001"/>
+  <testcase name="levelWinStuff1()" classname="inkball.AppTest" time="0.002"/>
+  <testcase name="levelWinStuff2()" classname="inkball.AppTest" time="0.169"/>
+  <testcase name="timesUpText()" classname="inkball.AppTest" time="0.002"/>
+  <testcase name="testFrameRate()" classname="inkball.AppTest" time="0.0"/>
+  <testcase name="testTimerInitial()" classname="inkball.AppTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[java.util.ConcurrentModificationException
+	at java.util.ArrayList$Itr.checkForComodification(ArrayList.java:911)
+	at java.util.ArrayList$Itr.next(ArrayList.java:861)
+	at inkball.App.draw(App.java:284)
+	at processing.core.PApplet.handleDraw(PApplet.java:2426)
+	at processing.awt.PSurfaceAWT$12.callDraw(PSurfaceAWT.java:1557)
+	at processing.core.PSurfaceNone$AnimationThread.run(PSurfaceNone.java:316)
+]]></system-err>
+</testsuite>
